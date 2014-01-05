@@ -35,7 +35,9 @@ Download and copy the couchdb folder from python-couchdb, and put it in the same
 
 Run the following command:
 
+```
 "C:\Program Files (x86)\IronPython 2.7\ipy" "C:\Program Files (x86)\IronPython 2.7\Tools\Scripts\pyc.py" /main:mt_sync.py /target:exe
+```
 
 This will give you an EXE called mt_sync.py that you can run without IronPython installed. Just copy everything in the folder (Lib, couchdb, default.cfg, mt_sync.dll, and mt_sync.exe) and you're good to go.
 
