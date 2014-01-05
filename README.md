@@ -41,7 +41,7 @@ This will give you an EXE called mt_sync.py that you can run without IronPython 
 
 ##### Download and use a pre-compiled EXE
 
-1) Go to Releases and download mt_sync.zip
-2) Copy the mt_sync folder to somewhere, e.g. your ManicTime Data directory
-3) Edit default.cfg with your details
-4) Run mt_sync.exe - it will keep running and poll the database every 60 seconds (maybe to be 5 minutes in the future).
+1. Go to Releases and download mt_sync.zip
+2. Copy the mt_sync folder to somewhere, e.g. your ManicTime Data directory
+3. Edit default.cfg with your details
+4. Run mt_sync.exe - it will keep running and poll the database every 60 seconds (maybe to be 5 minutes in the future).
