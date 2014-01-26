@@ -51,7 +51,7 @@ def set_last_eventid(last_eventid):
     if last_eventid > 0:
         try:
             last_eventid_file = open(last_eventid_filepath,'w')
-            last_eventid_file.write(str(last_eventid))
+            last_eventid_file.write(int(last_eventid))
             last_eventid_file.close()
         # Catch the exception. Real exception handler would be more robust
         except IOError:
@@ -90,9 +90,9 @@ def query_database(last_eventid):
         temp_row['quantity'] = (end-start).total_seconds()
         ll.append(temp_row)
         
-        set_last_eventid(reader['ActivityId'])
 
-
+    # This function will exist the program if there is a problem with saving ActivityID
+    set_last_eventid(reader['ActivityId'])
     couch = couchdb.Server(URL)
     couch.resource.credentials = (USERNAME, PASSWORD)
     db = couch[DATABASE]
