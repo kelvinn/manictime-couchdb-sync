@@ -51,7 +51,7 @@ def set_last_eventid(last_eventid):
     if last_eventid > 0:
         try:
             last_eventid_file = open(last_eventid_filepath,'w')
-            last_eventid_file.write(int(last_eventid))
+            last_eventid_file.write(str(last_eventid))
             last_eventid_file.close()
         # Catch the exception. Real exception handler would be more robust
         except IOError:
@@ -74,10 +74,10 @@ def query_database(last_eventid):
     while reader.Read():
         print reader['ActivityId'], reader['StartUtcTime'], reader['EndUtcTime'], reader['DisplayName']
         temp_row = {}
-        #print reader['ActivityId'], reader['DisplayName'], reader['StartUtcTime'], reader['EndUtcTime']
         start = datetime(reader['StartUtcTime'])
         end = datetime(reader['EndUtcTime'])
-        
+        activityID = reader['ActivityId'] # Activity ID will also carry through to set_last_eventid below
+
         temp_row['action'] = "computer"
         temp_row['location'] = "home"
         temp_row['category'] = "activity"
@@ -85,14 +85,14 @@ def query_database(last_eventid):
         temp_row['end'] = end.strftime("%Y-%m-%dT%H:%M:%SZ")
         temp_row['added'] = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
         temp_row['message'] = reader['DisplayName']
-        temp_row['ManicTimeActivityId'] = reader['ActivityId']
+        temp_row['ManicTimeActivityId'] = activityID
         temp_row['applicaiton'] = reader['GroupDisplayName']
         temp_row['quantity'] = (end-start).total_seconds()
         ll.append(temp_row)
-        
 
-    # This function will exist the program if there is a problem with saving ActivityID
-    set_last_eventid(reader['ActivityId'])
+    # set_last_eventid will exit the program if there is a problem with saving ActivityID
+    set_last_eventid(activityID)
+
     couch = couchdb.Server(URL)
     couch.resource.credentials = (USERNAME, PASSWORD)
     db = couch[DATABASE]
@@ -103,6 +103,7 @@ def query_database(last_eventid):
 if __name__ == '__main__':
     while True:
         last_eventid = get_last_eventid()
-        query_database(last_eventid)
+        if last_eventid:
+            query_database(last_eventid)
         sleep(60)
         
